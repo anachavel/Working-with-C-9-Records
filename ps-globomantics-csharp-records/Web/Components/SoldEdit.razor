@@ -1,11 +1,9 @@
-﻿@using Web.ViewModels
-@if (Editing)
+﻿@if (Editing)
 {
-<div>
-    <input id="sold" type="number" @bind="Event.Sold" @bind:event="oninput" placeholder="Enter sold" class="soldInput" />
-    <a class="btn-primary" type="button" @onclick="OnConfirmClick">CONFIRM @Event.Sold</a>
-    <a class="btn-primary" type="button" @onclick="OnCancelClick">X</a>
-</div>
+    <div>
+        <input id="sold" type="number" @bind="sold" @bind:event="oninput" placeholder="Enter sold" class="soldInput" />
+        <a class="btn-primary" type="button" @onclick="OnConfirmClick">CONFIRM @sold</a>
+    </div>
 }
 else
 {
@@ -16,26 +14,30 @@ else
 
 @code {
     bool Editing = false;
+    int sold = 0;
+    ListEventViewModel listEventViewModel;
 
     [Parameter]
-    public EventViewModel Event { get; set; }
+    public ListEventViewModel EventViewModel {
+        set
+        {
+            listEventViewModel = value;
+            sold = value.Sold;
+        }
+    }
 
     [Parameter]
-    public EventCallback<EventViewModel> OnConfirmed { get; set; }
+    public EventCallback<ListEventViewModel> OnConfirmed { get; set; }
 
     public void OnEditClick()
     {
         Editing = true;
     }
 
-    public async void OnCancelClick()
-    {
-        Editing = false;
-    }
-
     public async void OnConfirmClick()
     {
-        await OnConfirmed.InvokeAsync(Event);
         Editing = false;
+        var newViewModel = listEventViewModel with { Sold = sold };
+        await OnConfirmed.InvokeAsync(newViewModel);
     }
 }
