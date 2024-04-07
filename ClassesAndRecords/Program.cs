@@ -4,27 +4,26 @@ namespace ClassesAndRecords
 {
     class Program
     {
-        static void PrintCourse(Course course)
-        {
-
-        }
-        
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             var pluralsightCourse = new Course();
             pluralsightCourse.Name = "Working with C# Records";
             pluralsightCourse.Author = "Roland Guijt";
 
-            var anotherCourse = pluralsightCourse;
-            
-            Console.WriteLine(pluralsightCourse.Name);
-            Console.WriteLine(anotherCourse.Name);
-        } 
+            var classroomCourse = new CourseRecord(
+                "Working with C# Records",
+                "Roland Guijt"
+                );
+
+            // classroomCourse.Name = "Another title";
+        }
     }
+
     public class Course
     {
         public string Name { get; set; }
-        public String Author { get; set; } // Escribo "prop" y pulso tab para que me cree automáticamente una propiedad
+        public string Author { get; set; }
     }
-}
 
+    public record CourseRecord(string Name, string Author);
+}
